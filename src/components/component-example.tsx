@@ -31,9 +31,13 @@ import {
   Combobox,
   ComboboxContent,
   ComboboxEmpty,
-  ComboboxInput,
   ComboboxItem,
   ComboboxList,
+  ComboboxChips,
+  ComboboxValue,
+  ComboboxChipsInput,
+  ComboboxChip,
+  useComboboxAnchor,
 } from "@/components/ui/combobox"
 import {
   DropdownMenu,
@@ -148,6 +152,9 @@ function FormExample() {
     push: true,
   })
   const [theme, setTheme] = React.useState("light")
+
+  const anchor = useComboboxAnchor()
+
 
   return (
     <Example title="Form">
@@ -459,13 +466,20 @@ function FormExample() {
                 <FieldLabel htmlFor="small-form-framework">
                   Framework
                 </FieldLabel>
-                <Combobox items={frameworks}>
-                  <ComboboxInput
-                    id="small-form-framework"
-                    placeholder="Select a framework"
-                    required
-                  />
-                  <ComboboxContent>
+                <Combobox items={frameworks} multiple autoHighlight defaultValue={[frameworks[0]]}>
+                  <ComboboxChips ref={anchor}>
+                    <ComboboxValue>
+                      {(values) => (
+                        <React.Fragment>
+                          {values.map((value: string) => (
+                            <ComboboxChip key={value}>{value}</ComboboxChip>
+                          ))}
+                          <ComboboxChipsInput />
+                        </React.Fragment>
+                      )}
+                    </ComboboxValue>
+                  </ComboboxChips>
+                  <ComboboxContent anchor={anchor}>
                     <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
                     <ComboboxList>
                       {(item) => (
